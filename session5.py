@@ -2,16 +2,12 @@ import time
 import math
 
 
-def print_f(args, kwargs):
+def print_f(*args,sep='',end='\n'):
     object = args
-    sep1 = kwargs.get('sep')
-    end1 = kwargs.get('end')
-    print(*object,sep=sep1,end=end1)
+    print(*object,sep=sep,end=end)
     return
 
-def temp_converter_f(args, kwargs):
-    temperature, *args = args
-    temp_given_in = (kwargs.get('temp_given_in')).lower()
+def temp_converter_f(temperature,temp_given_in='c'):
     if temp_given_in == 'c' and temperature >= -273.15:
         temp_in_f = temperature * 9 / 5 + 32
         temp_in_k = temperature + 273.15
@@ -53,14 +49,12 @@ def temp_converter_f(args, kwargs):
     return temp1, temp1_b, temp2, temp2_b
 
 
-def polygon_area_f(args, kwargs):
-    side_length, *args = args
-    n_sides = kwargs.get('sides')
-    if n_sides >= 3 and n_sides <= 6 and isinstance(n_sides, int) and side_length >= 0:
-        b = math.tan(math.pi / n_sides)
-        polygon_area = (side_length ** 2) * n_sides / (4 * b)
-        print(f'Area of {n_sides} sided Polygon is {polygon_area:.2f}')
-    elif not isinstance(n_sides, int):
+def polygon_area_f(side_length,sides=3):
+    if sides>= 3 and sides <= 6 and isinstance(sides, int) and side_length >= 0:
+        b = math.tan(math.pi / sides)
+        polygon_area = (side_length ** 2) * sides / (4 * b)
+        print(f'Area of {sides} sided Polygon is {polygon_area:.2f}')
+    elif not isinstance(sides, int):
         print("Number of sides should be a integer between 3 to 6")
         polygon_area = None
     elif side_length < 0:
@@ -72,41 +66,35 @@ def polygon_area_f(args, kwargs):
     return polygon_area
 
 
-def squared_power_list_f(args, kwargs):
-    number, *args = args
-    start_nu = kwargs.get('start')
-    end_nu = kwargs.get('end')
+def squared_power_list_f(number,start=0, end=5):
     squared_power_list = []
-    if start_nu >= 0 and start_nu <= end_nu:
-        for i in range(start_nu, (end_nu + 1)):
+    if start >= 0 and start <= end:
+        for i in range(start, (end + 1)):
             squared_power_list.append(number ** i)
         print(squared_power_list)
     else:
-        if start_nu < 0:
+        if start < 0:
             print("Start number cannot be less than 0")
         else:
             print("Start number cannot be less end Number")
     return squared_power_list
 
 
-def speed_converter_f(args, kwargs):
-    speed, *args = args
-    dist = kwargs.get('dist')
-    t = kwargs.get('time')
+def speed_converter_f(speed,dist='km',time='min'):
     table_dist = {"km": 1, 'm': 1000, "ft": 3280.84, "yrd": 1093.61, "mile": 0.621371}
     time_dist = {"ms": 1 / (3.6 * 10 ** 6), "s": 1 / 3600, "min": 1 / 60, "hr": 1, "day": 24}
-    if speed >= 0 and dist in table_dist and t in time_dist:
+    if speed >= 0 and dist in table_dist and time in time_dist:
         d_value = table_dist.get(dist)
-        t_value = time_dist.get(t)
+        t_value = time_dist.get(time)
         speed_converted = speed * d_value * t_value
-        print(f'Speed in {speed:.3e} in kmph is equal to {speed_converted:.3e} in {dist}/{t}')
-    elif dist not in table_dist and t not in time_dist:
+        print(f'Speed in {speed:.3e} in kmph is equal to {speed_converted:.3e} in {dist}/{time}')
+    elif dist not in table_dist and time not in time_dist:
         speed_converted = None
         print('Provide time(ms,s,min,hr,day) and distnace(km,m,mile,yrd or ft) in proper units  ')
     elif dist not in table_dist:
         speed_converted = None
         print('Provide proper distance  units')
-    elif t not in time_dist:
+    elif time not in time_dist:
         speed_converted = None
         print('Provide proper  time  units ')
     else:
@@ -117,25 +105,39 @@ def speed_converter_f(args, kwargs):
 
 def time_it(fn, *args, repetitions=1, **kwargs):
     time_start = time.perf_counter()
-    for i in range(repetitions):
-        if fn == 'print':
-            print_f(args, kwargs)
-            output=None
-        elif fn == 'squared_power_list':
-            output = squared_power_list_f(args, kwargs)
-        elif fn == 'polygon_area':
-            output = polygon_area_f(args, kwargs)
-        elif fn == 'temp_converter':
-            output = temp_converter_f(args, kwargs)
-        elif fn == 'speed_converter':
-            output = speed_converter_f(args, kwargs)
-        else:
-            print('function not Supported')
-            output = None
-    time_end = time.perf_counter()
-    delta = time_end - time_start
-    avg_time = delta / repetitions
+    if repetitions>0 and isinstance(repetitions,int):
+        for i in range(repetitions):
+            if fn == 'print':
+                print_f(args, kwargs)
+            elif fn == 'squared_power_list':
+                print(args)
+                number,*arg=args
+                start = kwargs.get('start')
+                end = kwargs.get('end')
+                squared_power_list_f(number,start=start,end=end)
+            elif fn == 'polygon_area':
+                side_length,*arg=args
+                sides=kwargs.get('sides')
+                polygon_area_f(side_length,sides= sides)
+            elif fn == 'temp_converter':
+                temp_converter_f(args, kwargs)
+            elif fn == 'speed_converter':
+                speed,*arg=args
+                dist = kwargs.get('dist')
+                time_in = kwargs.get('time')
+
+                speed_converter_f(speed,dist=dist,time=time_in)
+            else:
+                print('function not Supported')
+            time_end = time.perf_counter()
+            delta = time_end - time_start
+            avg_time = delta / repetitions
+    else:
+        print('Repetitions must be integer and  cannot be zero or less')
+        time_end = time.perf_counter()
+        delta = time_end - time_start
+        avg_time = delta
     print(f'avg time taken={avg_time:.10f}')
-    return output, avg_time
+    return avg_time
 
 
