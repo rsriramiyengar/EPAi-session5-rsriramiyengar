@@ -11,7 +11,7 @@
 ## time_it function
 - This function runs of following function for user given repetition and  returns avg_time run time per repetitions
 -  Repetitions needs to be non zero positive integer.
-### time_it('print', 1, 2, 3, sep='-', end= ' ***\n', repetitons=5)
+### time_it(print, 1, 2, 3, sep='-', end= ' ***\n', repetitons=5)
 
 ### print_f
 - This function prints the user given data for user provided  repetition number a user given input on screen with user given seperator and end variables.
@@ -19,30 +19,30 @@
 - end denotes the end character  to be used
 - repetitions defines the number of times it needs to be computed and printed.
 
-### time_it('squared_power_list', 2, start=0, end=5, repetitions=5) #2 is the number you are calculating power of, [1, 2, 4, 8, 16, 32]
-### squared_power_list_f
+### time_it(squared_power_list, 2, start=0, end=5, repetitions=5) #2 is the number you are calculating power of, [1, 2, 4, 8, 16, 32]
+### squared_power_list
 - This function computes and prints list of power of number for user input.
 - Where 'start' specifies the start of power of number. Note start number cannot be less than zero and end number.
 - Where 'end' specifies the end  of power of number.
 - The step taken is one.
 - repetitions defines the number of times it needs to be computed and printed. 
 
-### time_it('polygon_area', 15, sides = 3, repetitons=10) # 15 is the side length. This polygon supports area calculations of upto a hexagon
-### polygon_area_f
+### time_it(polygon_area, 15, sides = 3, repetitons=10) # 15 is the side length. This polygon supports area calculations of upto a hexagon
+### polygon_area
 - This function computes and prints area of polygon for user input.
 - '15' is the location where we define the +ve length of side.
 - 'side' this defines the number(int) of sides the polygon which needs to be between 3 and 6.
 - repetitions defines the number of times it needs to be computed and printed. 
 
-## time_it('temp_converter', 100, temp_given_in = 'f', repetitons=100) # 100 is the base temperature given to be converted
-### temp_converter_f
+## time_it(temp_converter, 100, temp_given_in = 'f', repetitons=100) # 100 is the base temperature given to be converted
+### temp_converter
 - This function computes and prints  Temperature from  user base units to others.
 - 'temp_given_in' is Input unit of temperature which can be  in 'k','c' or 'F') 
 - '100' is the user defined temperature in user defined units. 
 - repetitions defines the number of times it needs to be computed and printed.
 
-### time_it('speed_converter', 100, dist='km', time='min', repetitons=200) #dist can be km/m/ft/yrd, time can be ms/s/m/hr/day, speed given by user is in kmph
-### speed_converter_f
+### time_it(speed_converter, 100, dist='km', time='min', repetitons=200) #dist can be km/m/ft/yrd, time can be ms/s/m/hr/day, speed given by user is in kmph
+### speed_converter
 
 - This function computes and prints  speed kmph to user selected units of distance.
 - 'dist' is Input unit of distance which can be  in 'km' for kilometer, 'm' for meter, 'ft' for feet, 'yrd' for yard or 'mile' for mile.

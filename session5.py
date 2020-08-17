@@ -2,12 +2,7 @@ import time
 import math
 
 
-def print_f(*args,sep='',end='\n'):
-    object = args
-    print(*object,sep=sep,end=end)
-    return
-
-def temp_converter_f(temperature,temp_given_in='c'):
+def temp_converter(temperature,temp_given_in='c'):
     if temp_given_in == 'c' and temperature >= -273.15:
         temp_in_f = temperature * 9 / 5 + 32
         temp_in_k = temperature + 273.15
@@ -49,7 +44,7 @@ def temp_converter_f(temperature,temp_given_in='c'):
     return temp1, temp1_b, temp2, temp2_b
 
 
-def polygon_area_f(side_length,sides=3):
+def polygon_area(side_length,sides=3):
     if sides>= 3 and sides <= 6 and isinstance(sides, int) and side_length >= 0:
         b = math.tan(math.pi / sides)
         polygon_area = (side_length ** 2) * sides / (4 * b)
@@ -66,7 +61,7 @@ def polygon_area_f(side_length,sides=3):
     return polygon_area
 
 
-def squared_power_list_f(number,start=0, end=5):
+def squared_power_list(number,start=0, end=5):
     squared_power_list = []
     if start >= 0 and start <= end:
         for i in range(start, (end + 1)):
@@ -80,7 +75,7 @@ def squared_power_list_f(number,start=0, end=5):
     return squared_power_list
 
 
-def speed_converter_f(speed,dist='km',time='min'):
+def speed_converter(speed,dist='km',time='min'):
     table_dist = {"km": 1, 'm': 1000, "ft": 3280.84, "yrd": 1093.61, "mile": 0.621371}
     time_dist = {"ms": 1 / (3.6 * 10 ** 6), "s": 1 / 3600, "min": 1 / 60, "hr": 1, "day": 24}
     if speed >= 0 and dist in table_dist and time in time_dist:
@@ -105,33 +100,17 @@ def speed_converter_f(speed,dist='km',time='min'):
 
 def time_it(fn, *args, repetitions=1, **kwargs):
     time_start = time.perf_counter()
-    if repetitions>0 and isinstance(repetitions,int):
+    if callable(fn) and repetitions>0 and isinstance(repetitions,int):
         for i in range(repetitions):
-            if fn == 'print':
-                print_f(args, kwargs)
-            elif fn == 'squared_power_list':
-                print(args)
-                number,*arg=args
-                start = kwargs.get('start')
-                end = kwargs.get('end')
-                squared_power_list_f(number,start=start,end=end)
-            elif fn == 'polygon_area':
-                side_length,*arg=args
-                sides=kwargs.get('sides')
-                polygon_area_f(side_length,sides= sides)
-            elif fn == 'temp_converter':
-                temp_converter_f(args, kwargs)
-            elif fn == 'speed_converter':
-                speed,*arg=args
-                dist = kwargs.get('dist')
-                time_in = kwargs.get('time')
-
-                speed_converter_f(speed,dist=dist,time=time_in)
-            else:
-                print('function not Supported')
-            time_end = time.perf_counter()
-            delta = time_end - time_start
-            avg_time = delta / repetitions
+            fn(*args,**kwargs)
+        time_end = time.perf_counter()
+        delta = time_end - time_start
+        avg_time = delta / repetitions
+    elif not callable(fn):
+        print(' Function should be callable')
+        time_end = time.perf_counter()
+        delta = time_end - time_start
+        avg_time = delta / repetitions
     else:
         print('Repetitions must be integer and  cannot be zero or less')
         time_end = time.perf_counter()
